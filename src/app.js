@@ -6,8 +6,10 @@ import { Server } from "socket.io";
 import { router as viewsRouter } from "./routes/viewsRouter.js";
 import { router as productRouter } from "./routes/productRouter.js";
 import { router as cartRouter } from "./routes/cartRouter.js";
-import mongoose from "mongoose";
+import { router as sessionsRouter } from './routes/sessionsRouter.js';
+import mongoose, { trusted } from "mongoose";
 import { messagesModel } from "./dao/models/messagesModel.js";
+import sessions from "express-session"
 
 const PORT = 8081;
 
@@ -19,11 +21,15 @@ app.set("views", path.join(__dirname, "/views"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(sessions ({
+  secret:"CoderCoder123", resave:true, saveUninitialized:true
+}))
 app.use(express.static(path.join(__dirname, "/public")));
 
 app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
+app.use("/api/sessions", sessionsRouter)
 
 const server = app.listen(PORT, () =>
   console.log(`Server online en puerto:${PORT}`)
@@ -51,7 +57,7 @@ const connDB = async () => {
       "mongodb+srv://fabriziolandrielbackend:CoderCoder@cluster0.a6w4x0b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
       {
         dbName: "eCommerce",
-      }
+    }
     );
     console.log("Db on");
   } catch (error) {

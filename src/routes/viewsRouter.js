@@ -4,8 +4,10 @@ import ProductManager from "../dao/ProductManagerDB.js";
 import CartManager from "../dao/CartManagerDB.js";
 const productManager = new ProductManager();
 const cartManager = new CartManager();
+import { auth } from "../middleware/auth.js";
 
 router.get("/", async (req, res) => {
+  let usuario = req.session.usuario
   let { limit, sort, page, ...filters } = req.query;
   let { payload: products } = await productManager.getProducts(
     limit,
@@ -14,7 +16,7 @@ router.get("/", async (req, res) => {
     filters
   );
 
-  res.status(200).render("home", { products });
+  res.status(200).render("home", { products, usuario });
 });
 
 router.get("/realTimeProducts", async (req, res) => {
@@ -32,3 +34,27 @@ router.get("/carts/:cid", async (req, res) => {
   cart = cart.products.map((c) => c.toJSON());
   res.status(200).render("carts", { cart });
 });
+
+router.get('/',(req,res)=>{
+
+  res.status(200).render('home')
+})
+
+router.get('/registro',(req,res)=>{
+
+  res.status(200).render('registro')
+})
+
+router.get('/login',(req,res)=>{
+
+  let {error}=req.query
+
+  res.status(200).render('login', {error})
+})
+
+router.get('/perfil', auth, (req,res)=>{
+
+  res.status(200).render('perfil',{
+      usuario:req.session.usuario
+  })
+})
