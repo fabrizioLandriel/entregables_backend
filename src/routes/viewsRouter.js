@@ -9,14 +9,28 @@ import { auth } from "../middleware/auth.js";
 router.get("/", async (req, res) => {
   let usuario = req.session.usuario
   let { limit, sort, page, ...filters } = req.query;
-  let { payload: products } = await productManager.getProducts(
+  let { payload: products,
+    totalPages,
+    prevPage,
+    nextPage,
+    hasPrevPage,
+    hasNextPage,
+    prevLink,
+    nextLink, } = await productManager.getProducts(
     limit,
     page,
     sort,
     filters
   );
 
-  res.status(200).render("home", { products, usuario });
+  res.status(200).render("home", { products, usuario, 
+    totalPages,
+    prevPage,
+    nextPage,
+    hasPrevPage,
+    hasNextPage,
+    prevLink,
+    nextLink });
 });
 
 router.get("/realTimeProducts", async (req, res) => {

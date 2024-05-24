@@ -12,7 +12,8 @@
   </nav>
   <hr />
 </header>
-<main>
+<main class="overflow">
+
   <h2>Usuario {{usuario.nombre}}</h2>
 <hr>
 <h3>Datos usuario:</h3>
@@ -47,5 +48,23 @@
 
     {{/each}}
 
+    <div class="pagination">
+    {{#if hasPrevPage}}
+        <a href={{prevLink}}><button>Ant</button></a>
+        {{else}}
+        <button disabled>Ant</button>
+    {{/if}}
+        <p>Pagina:<strong>{{page}}</strong></p>
+    {{#if hasNextPage}}
+        <a href={{nextLink}}><button>Sig</button></a>
+        {{else}}
+        <button disabled class="disabled">Sig</button>
+    {{/if}}
+</div>
+
+    
+
   </article>
+
+  
 </main>

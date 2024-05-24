@@ -62,8 +62,8 @@ export default class ProductManager {
         page,
         hasPrevPage,
         hasNextPage,
-        prevLink: hasPrevPage ? `/products?page=${prevPage}` : null,
-        nextLink: hasNextPage ? `/products?page=${nextPage}` : null,
+        prevLink: hasPrevPage ? `/?page=${prevPage}` : null,
+        nextLink: hasNextPage ? `/?page=${nextPage}` : null,
       };
 
       return paginationInfo;

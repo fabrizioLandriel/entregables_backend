@@ -10,6 +10,9 @@ import { router as sessionsRouter } from './routes/sessionsRouter.js';
 import mongoose, { trusted } from "mongoose";
 import { messagesModel } from "./dao/models/messagesModel.js";
 import sessions from "express-session"
+import { initPassport } from './config/passport.config.js';
+import passport from "passport";
+import connectMongo from 'connect-mongo'
 
 const PORT = 8081;
 
@@ -18,13 +21,22 @@ const app = express();
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", path.join(__dirname, "/views"));
+app.use(express.static(path.join(__dirname, "/public")));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(sessions ({
-  secret:"CoderCoder123", resave:true, saveUninitialized:true
-}))
-app.use(express.static(path.join(__dirname, "/public")));
+  secret:"CoderCoder123", resave:true, saveUninitialized:true,
+
+    store: connectMongo.create({
+    mongoUrl:'mongodb+srv://fabriziolandrielbackend:CoderCoder@cluster0.a6w4x0b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    ttl:3600,
+    dbName:"eCommerce" 
+})}))
+
+initPassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use("/", viewsRouter);
 app.use("/api/products", productRouter);
