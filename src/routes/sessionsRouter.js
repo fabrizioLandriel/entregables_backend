@@ -3,6 +3,7 @@ export const router = Router();
 import { UsuariosManagerMongo } from "../dao/userManagerDB.js";
 import { generaHash } from "../utils.js";
 import passport from "passport";
+import { auth } from "../middleware/auth.js";
 
 const usuarioManager = new UsuariosManagerMongo();
 
@@ -114,6 +115,10 @@ router.get('/githubCb', passport.authenticate("github", {failureRedirect:"/api/s
     return res.status(200).json({payload:req.user});
 })
 
+router.get("/current", auth(["admin", "user"]), (req, res) => {
+    res.json({ user: req.session.user });
+  });
+  
 router.get("/logout", (req, res)=>{
     req.session.destroy(e=>{
         if(e){

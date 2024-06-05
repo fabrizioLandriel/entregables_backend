@@ -6,7 +6,7 @@ const productManager = new ProductManager();
 const cartManager = new CartManager();
 import { auth } from "../middleware/auth.js";
 
-router.get("/", async (req, res) => {
+router.get("/", auth(["user"]),async (req, res) => {
   let usuario = req.session.usuario
   let { limit, sort, page, ...filters } = req.query;
   let { payload: products,
@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
     nextLink });
 });
 
-router.get("/realTimeProducts", async (req, res) => {
+router.get("/realTimeProducts", auth(["admin", "user"]), async (req, res) => {
   let { payload: products } = await productManager.getProducts();
   res.status(200).render("realTimeProducts", { products });
 });
@@ -42,7 +42,7 @@ router.get("/chat", (req, res) => {
   res.status(200).render("chat");
 });
 
-router.get("/carts/:cid", async (req, res) => {
+router.get("/carts/:cid", auth(["admin", "user"]), async (req, res) => {
   let cid = req.params.cid;
   let cart = await cartManager.getCartById(cid);
   cart = cart.products.map((c) => c.toJSON());
@@ -54,19 +54,19 @@ router.get('/',(req,res)=>{
   res.status(200).render('home')
 })
 
-router.get('/registro',(req,res)=>{
+router.get('/registro', auth(["public"]),(req,res)=>{
 
   res.status(200).render('registro')
 })
 
-router.get('/login',(req,res)=>{
+router.get('/login', auth(["user"]),(req,res)=>{
 
   let {error}=req.query
 
   res.status(200).render('login', {error})
 })
 
-router.get('/perfil', auth, (req,res)=>{
+router.get('/perfil', auth(["admin","user"]), (req,res)=>{
 
   res.status(200).render('perfil',{
       usuario:req.session.usuario

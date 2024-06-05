@@ -42,34 +42,68 @@ export const initPassport=()=>{
         )
     )
 
+    // passport.use(
+    //     "login",
+    //     new local.Strategy(
+    //         {
+    //             usernameField:"email"
+    //         },
+    //         async(username, password, done)=>{
+    //             try {
+    //                 let usuario=await usuariosManager.getBy({email:username})
+    //                 if(!usuario){
+    //                     // res.setHeader('Content-Type','application/json');
+    //                     // return res.status(400).json({error:`Credenciales inválidas`})
+    //                     return done(null, false)    
+    //                 }
+                
+    //                 if(!validaPasword(password, usuario.password)){
+    //                     // res.setHeader('Content-Type','application/json');
+    //                     // return res.status(400).json({error:`Credenciales inválidas`})
+    //                     return done(null, false)    
+    //                 }
+                          
+    //                 return done(null, usuario)
+    //             } catch (error) {
+    //                 return done(error)
+    //             }
+    //         }
+    //     )
+    // )
     passport.use(
         "login",
         new local.Strategy(
             {
-                usernameField:"email"
+                usernameField: "email"
             },
-            async(username, password, done)=>{
+            async (username, password, done) => {
                 try {
-                    let usuario=await usuariosManager.getBy({email:username})
-                    if(!usuario){
-                        // res.setHeader('Content-Type','application/json');
-                        // return res.status(400).json({error:`Credenciales inválidas`})
-                        return done(null, false)    
+                    let usuario = await usuariosManager.getBy({ email: username });
+                    if (!usuario) {
+                        return done(null, false);
                     }
-                
-                    if(!validaPasword(password, usuario.password)){
-                        // res.setHeader('Content-Type','application/json');
-                        // return res.status(400).json({error:`Credenciales inválidas`})
-                        return done(null, false)    
+    
+                    if (!password) {
+                        console.error("Password is undefined");
+                        return done(null, false);
                     }
-                          
-                    return done(null, usuario)
+    
+                    if (!usuario.password) {
+                        console.error("User password is undefined");
+                        return done(null, false);
+                    }
+    
+                    if (!validaPasword(password, usuario.password)) {
+                        return done(null, false);
+                    }
+    
+                    return done(null, usuario);
                 } catch (error) {
-                    return done(error)
+                    return done(error);
                 }
             }
         )
-    )
+    );
 
     passport.use(
         "github",
@@ -87,7 +121,7 @@ export const initPassport=()=>{
                     let nombre=profile._json.name
                     if(!nombre || !email){
                         return done(null, false)
-                    }
+                    }   
                     let usuario=await usuariosManager.getBy({email})
                     if(!usuario){
                         usuario=await usuariosManager.create({
