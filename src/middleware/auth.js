@@ -6,13 +6,13 @@ export const auth = (privileges = []) => {
         return next();
       }
   
-      if (!req.session.user?.role) {
+      if (!req.session.usuario?.rol) { // tenia req.session.user?role. 
         return res
           .status(401)
           .json({ error: `Logueate o contacta a un administrador por posible falta de rol` });
       }
   
-      if (!privileges.includes(req.session.user.role.toLowerCase())) {
+      if (!privileges.includes(req.session.usuario.rol.toLowerCase())) {
         return res
           .status(403)
           .json({ error: `Privilegios insuficientes` });

@@ -88,6 +88,7 @@ td {
   display: flex;
   width: 100%;
   flex-direction: column;
+  color: black;
 }
 .me {
   display: flex;
@@ -97,10 +98,11 @@ td {
   align-items: flex-end;
 }
 .me p {
-  background-color: #005c4b;
+  background-color: #1b36d3;
 }
 .others p {
-  background-color: #353535;
+  background-color: #161616 ; 
+  color: black;
 }
 
 .mainChat {
@@ -109,14 +111,14 @@ td {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #192229;
+  background-color: #263846;
 }
 input {
   border-radius: 10px;
   padding: 5px;
 }
 .sectionChat {
-  background-color: #212e36;
+  background-color: #445969;
   width: 500px;
   display: flex;
   flex-direction: column-reverse;

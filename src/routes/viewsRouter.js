@@ -59,7 +59,7 @@ router.get('/registro', auth(["public"]),(req,res)=>{
   res.status(200).render('registro')
 })
 
-router.get('/login', auth(["user"]),(req,res)=>{
+router.get('/login', auth(["public"]),(req,res)=>{
 
   let {error}=req.query
 
