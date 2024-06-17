@@ -1,5 +1,5 @@
 import { cartsModel } from "./models/cartsModel.js";
-import ProductManager from "./ProductMongoDAO.jsc";
+import ProductManager from "./ProductMongoDAO.js";
 const productManager = new ProductManager();
 
 export default class CartManager {

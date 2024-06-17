@@ -4,6 +4,7 @@ import { UsuariosManagerMongo } from "../dao/UserMongoDAO.js"
 import { generaHash } from "../utils.js"
 import { validaPasword } from "../utils.js"
 import github from "passport-github2"
+import { config } from "./config.js"
 
 const usuariosManager=new UsuariosManagerMongo();
 
@@ -109,8 +110,8 @@ export const initPassport=()=>{
         "github",
         new github.Strategy(
             {
-                clientID:"Iv23li9c5nn2gpnYvby3",
-                clientSecret:"bd9d89b7854e07f5cf8220f9f5dedd4f68668608",
+                clientID:config.CLIENT_ID_GITHUB,
+                clientSecret:config.CLIENT_SECRET_GITHUB,
                 callbackURL:"http://localhost:8081/api/sessions/githubCb"
             },
             async(tokenAcceso, tokenRefresh, profile, done)=>{

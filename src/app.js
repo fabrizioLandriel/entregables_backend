@@ -13,8 +13,9 @@ import sessions from "express-session"
 import { initPassport } from './config/passport.config.js';
 import passport from "passport";
 import connectMongo from 'connect-mongo'
+import { config } from "./config/config.js";
 
-const PORT = 8081;
+const PORT = config.PORT;
 
 const app = express();
 
@@ -26,12 +27,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(sessions ({
-  secret:"CoderCoder123", resave:true, saveUninitialized:true,
+  secret:config.SECRET, resave:true, saveUninitialized:true,
 
     store: connectMongo.create({
-    mongoUrl:'mongodb+srv://fabriziolandrielbackend:CoderCoder@cluster0.a6w4x0b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',
+    mongoUrl:config.MONGO_URL,
     ttl:3600,
-    dbName:"eCommerce" 
+    dbName:config.DB_NAME 
 })}))
 
 initPassport()
@@ -66,9 +67,9 @@ io.on("connection", (socket) => {
 const connDB = async () => {
   try {
     await mongoose.connect(
-      "mongodb+srv://fabriziolandrielbackend:CoderCoder@cluster0.a6w4x0b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+      config.MONGO_URL,
       {
-        dbName: "eCommerce",
+        dbName: config.DB_NAME,
     }
     );
     console.log("Db on");
