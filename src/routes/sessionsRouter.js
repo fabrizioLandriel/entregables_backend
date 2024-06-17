@@ -1,6 +1,6 @@
 import { Router } from "express";
 export const router = Router();
-import { UsuariosManagerMongo } from "../dao/userManagerDB.js";
+import { UsuariosManagerMongo } from "../dao/UserMongoDAO.js";
 import { generaHash } from "../utils.js";
 import passport from "passport";
 import { auth } from "../middleware/auth.js";

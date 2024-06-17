@@ -1,6 +1,6 @@
 import passport from "passport"
 import local from "passport-local"
-import { UsuariosManagerMongo } from "../dao/userManagerDB.js"
+import { UsuariosManagerMongo } from "../dao/UserMongoDAO.js"
 import { generaHash } from "../utils.js"
 import { validaPasword } from "../utils.js"
 import github from "passport-github2"

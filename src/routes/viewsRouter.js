@@ -1,7 +1,7 @@
 import { Router } from "express";
 export const router = Router();
-import ProductManager from "../dao/ProductManagerDB.js";
-import CartManager from "../dao/CartManagerDB.js";
+import ProductManager from "../dao/ProductMongoDAO.js";
+import CartManager from "../dao/CartMongoDAO.js";
 const productManager = new ProductManager();
 const cartManager = new CartManager();
 import { auth } from "../middleware/auth.js";
@@ -16,7 +16,7 @@ router.get("/", auth(["user"]),async (req, res) => {
     hasPrevPage,
     hasNextPage,
     prevLink,
-    nextLink, } = await productManager.getProducts(
+    nextLink, } = await productManager.get(
     limit,
     page,
     sort,
@@ -34,7 +34,7 @@ router.get("/", auth(["user"]),async (req, res) => {
 });
 
 router.get("/realTimeProducts", auth(["admin", "user"]), async (req, res) => {
-  let { payload: products } = await productManager.getProducts();
+  let { payload: products } = await productManager.get();
   res.status(200).render("realTimeProducts", { products });
 });
 
@@ -44,7 +44,7 @@ router.get("/chat", (req, res) => {
 
 router.get("/carts/:cid", auth(["admin", "user"]), async (req, res) => {
   let cid = req.params.cid;
-  let cart = await cartManager.getCartById(cid);
+  let cart = await cartManager.getById(cid);
   cart = cart.products.map((c) => c.toJSON());
   res.status(200).render("carts", { cart });
 });

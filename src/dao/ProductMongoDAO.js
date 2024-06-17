@@ -1,7 +1,7 @@
 import { productsModel } from "./models/productsModel.js";
 
 export default class ProductManager {
-  async addProducts({
+  async add({
     title,
     description,
     code,
@@ -25,7 +25,7 @@ export default class ProductManager {
     await productsModel.create(productAdded);
   }
 
-  async getProducts(limit = 10, page = 1, price, query) {
+  async get(limit = 10, page = 1, price, query) {
     if (price == "asc") {
       price = 1;
     } else {
@@ -75,11 +75,11 @@ export default class ProductManager {
     }
   }
 
-  async getProductsBy(filtro) {
+  async getBy(filtro) {
     return await productsModel.findOne(filtro);
   }
 
-  async updateProducts(id, productData) {
+  async update(id, productData) {
     // ---> 'PRODUCTDATA' se pasa por el body de postman<---
     return await productsModel.findByIdAndUpdate(id, productData, {
       runValidators: true,
@@ -87,7 +87,7 @@ export default class ProductManager {
     });
   }
 
-  async deleteProducts(productId) {
+  async delete(productId) {
     return await productsModel.deleteOne({ _id: productId });
   }
 }
